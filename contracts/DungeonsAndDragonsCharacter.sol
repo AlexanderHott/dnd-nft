@@ -67,7 +67,7 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
     /// @dev Request a DnD character.
     /// @param _name The name of the character.
     /// @return The token request ID of the character.
-    function requestNewRandomCharacter(string memory name)
+    function requestNewRandomCharacter(string memory _name)
         public
         returns (bytes32)
     {
@@ -76,7 +76,7 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
             "Not enough LINK in contract"
         );
         bytes32 requestId = requestRandomness(keyHash, fee);
-        requestToCharacterName[requestId] = name;
+        requestToCharacterName[requestId] = _name;
         requestToSender[requestId] = msg.sender;
         return requestId;
     }
@@ -196,7 +196,7 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
         );
     }
 
-    function sqrt(uint256 x) internal view returns (uint256 y) {
+    function sqrt(uint256 x) internal pure returns (uint256 y) {
         uint256 z = (x + 1) / 2;
         y = x;
         while (z < y) {
