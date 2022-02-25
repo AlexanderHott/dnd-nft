@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
@@ -84,19 +84,19 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
     /// @dev Get the URI that a Dnd character can be found at.
     /// @param _tokenId The token ID of the character.
     /// @return The URI of the character's metadata.
-    function getTokenURI(uint256 tokenId) public view returns (string memory) {
-        return tokenURI(tokenId);
+    function getTokenURI(uint256 _tokenId) public view returns (string memory) {
+        return tokenURI(_tokenId);
     }
 
     /// @dev Set the URI of a Dnd character.
     /// @param _tokenId The token ID of the character.
     /// @param _tokenURI The URI of the character's metadata.
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) public {
+    function setTokenURI(uint256 _tokenId, string memory _tokenURI) public {
         require(
-            _isApprovedOrOwner(_msgSender(), tokenId),
+            _isApprovedOrOwner(_msgSender(), _tokenId),
             "ERC721: transfer caller is not owner nor approved"
         );
-        _setTokenURI(tokenId, _tokenURI);
+        _setTokenURI(_tokenId, _tokenURI);
     }
 
     /// @dev Callback hook for when the VRF successfully returns a random number.
@@ -157,15 +157,15 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
         )
     {
         return (
-            characters[tokenId].name,
-            characters[tokenId].str +
-                characters[tokenId].dex +
-                characters[tokenId].con +
-                characters[tokenId].inte +
-                characters[tokenId].wis +
-                characters[tokenId].cha,
-            getLevel(tokenId),
-            characters[tokenId].exp
+            characters[_tokenId].name,
+            characters[_tokenId].str +
+                characters[_tokenId].dex +
+                characters[_tokenId].con +
+                characters[_tokenId].inte +
+                characters[_tokenId].wis +
+                characters[_tokenId].cha,
+            getLevel(_tokenId),
+            characters[_tokenId].exp
         );
     }
 
@@ -196,9 +196,6 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
         );
     }
 
-    /// @dev Get the square root of a number.
-    /// @param x The number to square root.
-    /// @return The square root of x.
     function sqrt(uint256 x) internal view returns (uint256 y) {
         uint256 z = (x + 1) / 2;
         y = x;
